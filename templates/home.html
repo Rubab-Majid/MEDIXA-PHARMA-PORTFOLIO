@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            MEDIXA PHARMA Inventory Management
+        </p>
+
+    </div>
+
+</div>
+
+
+{# Calculate dashboard values from the data supplied by app.py #}
+
+{% set ns = namespace(
+    total_medicines=medicines|length,
+    low_stock_count=0
+) %}
+
+{% for medicine in medicines %}
+
+    {% if medicine.balance <= 10 %}
+        {% set ns.low_stock_count = ns.low_stock_count + 1 %}
+    {% endif %}
+
+{% endfor %}
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <span class="stat-label">
+            Total Medicines
+        </span>
+
+        <strong>
+            {{ ns.total_medicines }}
+        </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-label">
+            Total Stock
+        </span>
+
+        <strong>
+            {{ total_stock }}
+        </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-label">
+            Low Stock
+        </span>
+
+        <strong>
+            {{ ns.low_stock_count }}
+        </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-label">
+            Expired
+        </span>
+
+        <strong>
+            {{ expired_count }}
+        </strong>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-label">
+            Transactions
+        </span>
+
+        <strong>
+            {{ transaction_count }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Quick Actions
+    </h2>
+
+</div>
+
+
+<div class="quick-actions">
+
+    <a href="{{ url_for('add_medicine') }}"
+       class="action-card">
+
+        <span class="action-icon">+</span>
+
+        <strong>
+            Add Medicine
+        </strong>
+
+        <small>
+            Add a new medicine
+        </small>
+
+    </a>
+
+
+    <a href="{{ url_for('purchase') }}"
+       class="action-card">
+
+        <span class="action-icon">↓</span>
+
+        <strong>
+            Purchase Stock
+        </strong>
+
+        <small>
+            Add stock to inventory
+        </small>
+
+    </a>
+
+
+    <a href="{{ url_for('sell') }}"
+       class="action-card">
+
+        <span class="action-icon">↑</span>
+
+        <strong>
+            Sell Medicine
+        </strong>
+
+        <small>
+            Record a medicine sale
+        </small>
+
+    </a>
+
+
+    <a href="{{ url_for('inventory') }}"
+       class="action-card">
+
+        <span class="action-icon">▦</span>
+
+        <strong>
+            View Inventory
+        </strong>
+
+        <small>
+            Manage medicines
+        </small>
+
+    </a>
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Low Stock Medicines
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% set has_low_stock = false %}
+
+    {% for medicine in medicines %}
+
+        {% if medicine.balance <= 10 %}
+
+            {% set has_low_stock = true %}
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% if ns.low_stock_count > 0 %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Medicine</th>
+                        <th>Type</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in medicines %}
+
+                        {% if item.balance <= 10 %}
+
+                            <tr>
+
+                                <td>
+
+                                    <a class="table-link"
+                                       href="{{ url_for(
+                                           'medicine_details',
+                                           medicine_id=item.id
+                                       ) }}">
+
+                                        {{ item.name }}
+
+                                    </a>
+
+                                </td>
+
+
+                                <td>
+                                    {{ item.medicine_type }}
+                                </td>
+
+
+                                <td>
+                                    {{ item.balance }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if item.balance <= 0 %}
+
+                                        <span class="badge danger">
+                                            Out of Stock
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge warning">
+                                            Low Stock
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>
+                No Low Stock Medicines
+            </h3>
+
+            <p>
+                All medicines currently have sufficient stock.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

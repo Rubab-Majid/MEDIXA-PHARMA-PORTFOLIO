@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inventory | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Inventory
+        </h1>
+
+        <p>
+            Manage medicine stock, prices and profit.
+        </p>
+
+    </div>
+
+
+    <a href="{{ url_for('add_medicine') }}"
+       class="btn primary">
+
+        + Add Medicine
+
+    </a>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if medicines %}
+
+        <div class="table-wrapper">
+
+            <table class="inventory-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Added Date</th>
+                        <th>Medicine Name</th>
+                        <th>Type</th>
+                        <th>Latest Selling Price</th>
+                        <th>Average Purchasing Price</th>
+                        <th>Total Profit</th>
+                        <th>Balance</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for medicine in medicines %}
+
+                        <tr>
+
+                            <td>
+                                {{ medicine.date_added|format_date }}
+                            </td>
+
+
+                            <td>
+
+                                <a class="table-link"
+                                   href="{{ url_for(
+                                       'medicine_details',
+                                       medicine_id=medicine.id
+                                   ) }}">
+
+                                    {{ medicine.name }}
+
+                                </a>
+
+                            </td>
+
+
+                            <td>
+                                {{ medicine.medicine_type }}
+                            </td>
+
+
+                            <td>
+
+                                {{ "%.2f"|format(
+                                    medicine.latest_selling_price or 0
+                                ) }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ "%.2f"|format(
+                                    medicine.average_purchase_price or 0
+                                ) }}
+
+                            </td>
+
+
+                            <td class="profit-text">
+
+                                {{ "%.2f"|format(
+                                    medicine.total_profit or 0
+                                ) }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if medicine.balance <= 0 %}
+
+                                    <span class="stock-danger">
+                                        {{ medicine.balance }}
+                                    </span>
+
+                                {% elif medicine.balance <= 10 %}
+
+                                    <span class="stock-warning">
+                                        {{ medicine.balance }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="stock-good">
+                                        {{ medicine.balance }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="table-actions">
+
+                                    <a href="{{ url_for(
+                                        'medicine_details',
+                                        medicine_id=medicine.id
+                                    ) }}"
+                                       class="btn small blue">
+
+                                        Details
+
+                                    </a>
+
+
+                                    <a href="{{ url_for(
+                                        'edit_medicine',
+                                        medicine_id=medicine.id
+                                    ) }}"
+                                       class="btn small purple">
+
+                                        Edit
+
+                                    </a>
+
+
+                                    <form method="POST"
+                                          action="{{ url_for(
+                                              'delete_medicine',
+                                              medicine_id=medicine.id
+                                          ) }}"
+                                          onsubmit="return confirmDelete(
+                                              '{{ medicine.name }}'
+                                          );">
+
+                                        <button type="submit"
+                                                class="btn small danger">
+
+                                            Delete
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>
+                No Medicines Added
+            </h3>
+
+            <p>
+                Add your first medicine to start managing inventory.
+            </p>
+
+            <a href="{{ url_for('add_medicine') }}"
+               class="btn primary">
+
+                Add Medicine
+
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

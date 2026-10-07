@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1c33">
+
+    <title>{% block title %}MEDIXA PHARMA{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <a href="{{ url_for('home') }}"
+           class="brand-link"
+           aria-label="MEDIXA PHARMA Dashboard">
+
+            <img src="{{ url_for('static', filename='medixa_logo.png') }}"
+                 alt="MEDIXA PHARMA"
+                 class="brand-logo">
+
+        </a>
+
+    </div>
+
+
+    <button class="nav-toggle"
+            type="button"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="main-navigation">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <nav class="navbar" id="main-navigation">
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('inventory') }}">
+                Inventory
+            </a>
+
+            <a href="{{ url_for('add_medicine') }}">
+                Add Medicine
+            </a>
+
+            <a href="{{ url_for('purchase') }}">
+                Purchase
+            </a>
+
+            <a href="{{ url_for('sell') }}">
+                Sell
+            </a>
+
+            <a href="{{ url_for('transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('expiry') }}">
+                Expiry
+            </a>
+
+        </div>
+
+
+        <div class="account-area">
+
+            {% if g.user %}
+
+                <span class="account-name">
+                    {{ g.user["username"] }}
+                </span>
+
+                <a href="{{ url_for('logout') }}"
+                   class="logout-link">
+                    Logout
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main class="page-container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+<footer class="footer">
+
+    <p>
+        MEDIXA PHARMA Inventory Management System
+    </p>
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

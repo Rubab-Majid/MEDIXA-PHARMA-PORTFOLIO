@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1c33">
+    <title>{% block title %}MEDIXA PHARMA{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+<div class="auth-shell">
+    <div class="auth-brand">
+        <img src="{{ url_for('static', filename='medixa_logo.png') }}"
+             alt="MEDIXA PHARMA"
+             class="auth-logo">
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="auth-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block auth_content %}{% endblock %}
+
+    <div class="auth-footer">MEDIXA PHARMA Inventory Management System</div>
+</div>
+</body>
+</html>

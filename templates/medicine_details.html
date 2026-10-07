@@ -1,0 +1,577 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ medicine.name }} | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            {{ medicine.name }}
+        </h1>
+
+        <p>
+            Medicine Details
+        </p>
+
+    </div>
+
+
+    <div class="heading-actions">
+
+        <a
+            href="{{ url_for(
+                'edit_medicine',
+                medicine_id=medicine.id
+            ) }}"
+            class="btn purple"
+        >
+            Edit Medicine
+        </a>
+
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'delete_medicine',
+                medicine_id=medicine.id
+            ) }}"
+            onsubmit="return confirmDelete(
+                '{{ medicine.name }}'
+            );"
+        >
+
+            <button
+                type="submit"
+                class="btn danger"
+            >
+                Delete Medicine
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="details-grid">
+
+    <div class="detail-card">
+
+        <span>
+            Medicine Name
+        </span>
+
+        <strong>
+            {{ medicine.name }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Medicine Type
+        </span>
+
+        <strong>
+            {{ medicine.medicine_type }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Added Date
+        </span>
+
+        <strong>
+            {{ medicine.date_added|format_date }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Latest Selling Price
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(
+                stats.latest_selling_price or 0
+            ) }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Average Purchasing Price
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(
+                stats.average_purchase_price or 0
+            ) }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Total Profit
+        </span>
+
+        <strong class="profit-text">
+
+            {{ "%.2f"|format(
+                stats.total_profit or 0
+            ) }}
+
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Total Purchased
+        </span>
+
+        <strong>
+            {{ stats.total_purchased }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Total Sold
+        </span>
+
+        <strong>
+            {{ stats.total_sold }}
+        </strong>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <span>
+            Current Balance
+        </span>
+
+        <strong>
+            {{ stats.balance }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Purchase History
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if purchase_history %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Purchased Date
+                        </th>
+
+                        <th>
+                            Quantity
+                        </th>
+
+                        <th>
+                            Purchasing Price
+                        </th>
+
+                        <th>
+                            Manufacturing Date
+                        </th>
+
+                        <th>
+                            Expiry Date
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in purchase_history %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.transaction_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ "%.2f"|format(
+                                    item.purchase_price or 0
+                                ) }}
+                            </td>
+
+
+                            <td>
+                                {{ item.manufacturing_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.expiry_date|format_date }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No purchase history.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Sell History
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if sell_history %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Sold Date
+                        </th>
+
+                        <th>
+                            Quantity Sold
+                        </th>
+
+                        <th>
+                            Selling Price / Medicine
+                        </th>
+
+                        <th>
+                            Profit / Medicine
+                        </th>
+
+                        <th>
+                            Total Profit
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in sell_history %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.transaction_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ "%.2f"|format(
+                                    item.selling_price or 0
+                                ) }}
+                            </td>
+
+
+                            <td>
+                                {{ "%.2f"|format(
+                                    item.unit_profit or 0
+                                ) }}
+                            </td>
+
+
+                            <td class="profit-text">
+
+                                {{ "%.2f"|format(
+                                    item.total_profit or 0
+                                ) }}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No selling history.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Complete Transaction History
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if transactions %}
+
+        <div class="table-wrapper">
+
+            <table class="transactions-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Transaction</th>
+                        <th>Quantity</th>
+                        <th>Purchase Price</th>
+                        <th>Selling Price</th>
+                        <th>Unit Profit</th>
+                        <th>Total Profit</th>
+                        <th>Manufacturing Date</th>
+                        <th>Expiry Date</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in transactions %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.transaction_date|format_date }}
+                            </td>
+
+
+                            <td>
+
+                                {% if item.transaction_type == "Purchase" %}
+
+                                    <span class="badge purchase">
+                                        Purchase
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge sell">
+                                        Sell
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ "%.2f"|format(
+                                    item.purchase_price or 0
+                                ) }}
+                            </td>
+
+
+                            <td>
+
+                                {% if item.transaction_type == "Sell" %}
+
+                                    {{ "%.2f"|format(
+                                        item.selling_price or 0
+                                    ) }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if item.transaction_type == "Sell" %}
+
+                                    {{ "%.2f"|format(
+                                        item.unit_profit or 0
+                                    ) }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if item.transaction_type == "Sell" %}
+
+                                    <span class="profit-text">
+
+                                        {{ "%.2f"|format(
+                                            item.total_profit or 0
+                                        ) }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if item.manufacturing_date %}
+
+                                    {{ item.manufacturing_date|format_date }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if item.expiry_date %}
+
+                                    {{ item.expiry_date|format_date }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No transactions found.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

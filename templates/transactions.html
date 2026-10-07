@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}
+Transactions | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Transactions
+        </h1>
+
+        <p>
+            Complete purchase and selling transaction history.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if transactions %}
+
+        <div class="table-wrapper">
+
+            <table class="transactions-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Medicine</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Purchase Price</th>
+                        <th>Selling Price</th>
+                        <th>Unit Profit</th>
+                        <th>Total Profit</th>
+                        <th>Manufacturing Date</th>
+                        <th>Expiry Date</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for transaction in transactions %}
+
+                        <tr>
+
+                            <td>
+                                {{ transaction.transaction_date|format_date }}
+                            </td>
+
+
+                            <td>
+
+                                <a class="table-link"
+                                   href="{{ url_for(
+                                       'medicine_details',
+                                       medicine_id=transaction.medicine_id
+                                   ) }}">
+
+                                    {{ transaction.medicine_name }}
+
+                                </a>
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.transaction_type == "Purchase" %}
+
+                                    <span class="badge purchase">
+                                        Purchase
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge sell">
+                                        Sell
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+                                {{ transaction.quantity }}
+                            </td>
+
+
+                            <td>
+
+                                {{ "%.2f"|format(
+                                    transaction.purchase_price or 0
+                                ) }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.transaction_type == "Sell" %}
+
+                                    {{ "%.2f"|format(
+                                        transaction.selling_price or 0
+                                    ) }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.transaction_type == "Sell" %}
+
+                                    {{ "%.2f"|format(
+                                        transaction.unit_profit or 0
+                                    ) }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.transaction_type == "Sell" %}
+
+                                    <strong class="profit-text">
+
+                                        {{ "%.2f"|format(
+                                            transaction.total_profit or 0
+                                        ) }}
+
+                                    </strong>
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.manufacturing_date %}
+
+                                    {{ transaction.manufacturing_date|format_date }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if transaction.expiry_date %}
+
+                                    {{ transaction.expiry_date|format_date }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>
+                No Transactions
+            </h3>
+
+            <p>
+                Purchase or sell a medicine to create transaction records.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

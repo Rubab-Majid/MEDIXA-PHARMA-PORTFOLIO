@@ -1,0 +1,96 @@
+{% extends "auth_base.html" %}
+
+{% block title %}
+Login | MEDIXA PHARMA
+{% endblock %}
+
+{% block auth_content %}
+
+<div class="auth-card">
+
+    <div class="auth-heading">
+
+        <span class="auth-eyebrow">
+            SECURE ACCESS
+        </span>
+
+        <h1>
+            Welcome Back
+        </h1>
+
+        <p>
+            Sign in to access your MEDIXA PHARMA
+            Inventory Management System.
+        </p>
+
+    </div>
+
+    <form method="POST" class="auth-form">
+
+        <div class="auth-field">
+
+            <label for="username_or_email">
+                Username or Email
+            </label>
+
+            <input
+                type="text"
+                id="username_or_email"
+                name="username_or_email"
+                autocomplete="username"
+                placeholder="Enter your username or email"
+                required
+                autofocus
+            >
+
+        </div>
+
+        <div class="auth-field">
+
+            <div class="auth-label-row">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <a href="{{ url_for('forgot_password') }}">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="auth-submit"
+        >
+            Sign In
+        </button>
+
+    </form>
+
+    <div class="auth-switch">
+
+        <span>
+            Don't have an account?
+        </span>
+
+        <a href="{{ url_for('register') }}">
+            Create Account
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

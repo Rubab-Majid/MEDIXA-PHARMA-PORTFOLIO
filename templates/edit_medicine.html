@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Medicine | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Edit Medicine
+        </h1>
+
+        <p>
+            Update the basic information of this medicine.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        <div class="form-group">
+
+            <label for="name">
+                Medicine Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ medicine.name }}"
+                placeholder="Enter medicine name"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="medicine_type">
+                Medicine Type
+            </label>
+
+            <select
+                id="medicine_type"
+                name="medicine_type"
+                required
+            >
+
+                <option value="">
+                    Select medicine type
+                </option>
+
+
+                <option value="Tablet"
+                    {% if medicine.medicine_type == "Tablet" %}
+                        selected
+                    {% endif %}>
+                    Tablet
+                </option>
+
+
+                <option value="Capsule"
+                    {% if medicine.medicine_type == "Capsule" %}
+                        selected
+                    {% endif %}>
+                    Capsule
+                </option>
+
+
+                <option value="Syrup"
+                    {% if medicine.medicine_type == "Syrup" %}
+                        selected
+                    {% endif %}>
+                    Syrup
+                </option>
+
+
+                <option value="Injection"
+                    {% if medicine.medicine_type == "Injection" %}
+                        selected
+                    {% endif %}>
+                    Injection
+                </option>
+
+
+                <option value="Cream"
+                    {% if medicine.medicine_type == "Cream" %}
+                        selected
+                    {% endif %}>
+                    Cream
+                </option>
+
+
+                <option value="Ointment"
+                    {% if medicine.medicine_type == "Ointment" %}
+                        selected
+                    {% endif %}>
+                    Ointment
+                </option>
+
+
+                <option value="Drops"
+                    {% if medicine.medicine_type == "Drops" %}
+                        selected
+                    {% endif %}>
+                    Drops
+                </option>
+
+
+                <option value="Inhaler"
+                    {% if medicine.medicine_type == "Inhaler" %}
+                        selected
+                    {% endif %}>
+                    Inhaler
+                </option>
+
+
+                <option value="Suspension"
+                    {% if medicine.medicine_type == "Suspension" %}
+                        selected
+                    {% endif %}>
+                    Suspension
+                </option>
+
+
+                <option value="Other"
+                    {% if medicine.medicine_type == "Other" %}
+                        selected
+                    {% endif %}>
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="date_added">
+                Added Date
+            </label>
+
+            <input
+                type="date"
+                id="date_added"
+                name="date_added"
+                value="{{ medicine.date_added }}"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{{ url_for(
+                    'medicine_details',
+                    medicine_id=medicine.id
+                ) }}"
+                class="btn secondary"
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="btn primary"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

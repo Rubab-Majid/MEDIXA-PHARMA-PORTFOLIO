@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}
+Expiry Management | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Expiry Management
+        </h1>
+
+        <p>
+            Monitor medicines according to their expiry dates.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="expiry-cards">
+
+    <div class="expiry-card expired-card">
+
+        <span>
+            Expired
+        </span>
+
+        <strong>
+            {{ expired|length }}
+        </strong>
+
+    </div>
+
+
+    <div class="expiry-card expiring-card">
+
+        <span>
+            Expiring Within 30 Days
+        </span>
+
+        <strong>
+            {{ expiring|length }}
+        </strong>
+
+    </div>
+
+
+    <div class="expiry-card valid-card">
+
+        <span>
+            Valid
+        </span>
+
+        <strong>
+            {{ valid|length }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Expired Medicines
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if expired %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Medicine</th>
+                        <th>Type</th>
+                        <th>Purchase Date</th>
+                        <th>Expiry Date</th>
+                        <th>Purchased Quantity</th>
+                        <th>Current Balance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in expired %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.medicine_name }}
+                            </td>
+
+
+                            <td>
+                                {{ item.medicine_type }}
+                            </td>
+
+
+                            <td>
+                                {{ item.purchase_date|format_date }}
+                            </td>
+
+
+                            <td class="expired-text">
+                                {{ item.expiry_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ item.remaining_balance }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No expired medicines with remaining stock.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Expiring Within 30 Days
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if expiring %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Medicine</th>
+                        <th>Type</th>
+                        <th>Purchase Date</th>
+                        <th>Expiry Date</th>
+                        <th>Purchased Quantity</th>
+                        <th>Current Balance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in expiring %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.medicine_name }}
+                            </td>
+
+
+                            <td>
+                                {{ item.medicine_type }}
+                            </td>
+
+
+                            <td>
+                                {{ item.purchase_date|format_date }}
+                            </td>
+
+
+                            <td class="warning-text">
+                                {{ item.expiry_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ item.remaining_balance }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No medicines are expiring within 30 days.
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="section-header">
+
+    <h2>
+        Valid Medicines
+    </h2>
+
+</div>
+
+
+<div class="table-card">
+
+    {% if valid %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Medicine</th>
+                        <th>Type</th>
+                        <th>Purchase Date</th>
+                        <th>Expiry Date</th>
+                        <th>Purchased Quantity</th>
+                        <th>Current Balance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in valid %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.medicine_name }}
+                            </td>
+
+
+                            <td>
+                                {{ item.medicine_type }}
+                            </td>
+
+
+                            <td>
+                                {{ item.purchase_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.expiry_date|format_date }}
+                            </td>
+
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+
+                            <td>
+                                {{ item.remaining_balance }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No valid medicines with remaining stock.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sell Medicine | MEDIXA PHARMA
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            Sell Medicine
+        </h1>
+
+        <p>
+            Record a medicine sale and calculate profit automatically.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST"
+          id="sellForm">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="medicine_id">
+                    Medicine
+                </label>
+
+                <select
+                    name="medicine_id"
+                    id="medicine_id"
+                    required
+                >
+
+                    <option value="">
+                        Select medicine
+                    </option>
+
+                    {% for medicine in medicines %}
+
+                        <option
+                            value="{{ medicine.id }}"
+                            data-balance="{{ medicine.balance }}"
+                            data-cost="{{ medicine.average_purchase_price }}"
+                        >
+
+                            {{ medicine.name }}
+                            — Stock: {{ medicine.balance }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="available_balance">
+                    Available Balance
+                </label>
+
+                <input
+                    type="text"
+                    id="available_balance"
+                    value="0"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="average_cost">
+                    Average Purchasing Price
+                </label>
+
+                <input
+                    type="text"
+                    id="average_cost"
+                    value="0.00"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="quantity">
+                    Sell Quantity
+                </label>
+
+                <input
+                    type="number"
+                    name="quantity"
+                    id="quantity"
+                    min="1"
+                    step="1"
+                    placeholder="Enter quantity"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="selling_price">
+                    Selling Price / Medicine
+                </label>
+
+                <input
+                    type="number"
+                    name="selling_price"
+                    id="selling_price"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter selling price"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="sell_date">
+                    Sold Date
+                </label>
+
+                <input
+                    type="date"
+                    name="sell_date"
+                    id="sell_date"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="profit-preview">
+
+            <span>
+                Estimated Total Profit
+            </span>
+
+            <strong id="profit_preview">
+                0.00
+            </strong>
+
+        </div>
+
+
+        <div class="formula-box">
+
+            <strong>
+                Profit Calculation
+            </strong>
+
+            <p>
+                Total Profit =
+                (Selling Price − Average Purchasing Price)
+                × Quantity Sold
+            </p>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a href="{{ url_for('inventory') }}"
+               class="btn secondary">
+
+                Cancel
+
+            </a>
+
+
+            <button type="submit"
+                    class="btn primary">
+
+                Record Sale
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const medicineSelect =
+        document.getElementById("medicine_id");
+
+    const balanceInput =
+        document.getElementById("available_balance");
+
+    const costInput =
+        document.getElementById("average_cost");
+
+    const quantityInput =
+        document.getElementById("quantity");
+
+    const sellingPriceInput =
+        document.getElementById("selling_price");
+
+    const profitPreview =
+        document.getElementById("profit_preview");
+
+
+    function updateMedicineInformation() {
+
+        const selectedOption =
+            medicineSelect.options[
+                medicineSelect.selectedIndex
+            ];
+
+
+        if (!selectedOption || !selectedOption.value) {
+
+            balanceInput.value = "0";
+            costInput.value = "0.00";
+            profitPreview.textContent = "0.00";
+
+            return;
+        }
+
+
+        const balance =
+            parseFloat(
+                selectedOption.dataset.balance
+            ) || 0;
+
+
+        const cost =
+            parseFloat(
+                selectedOption.dataset.cost
+            ) || 0;
+
+
+        balanceInput.value = balance;
+        costInput.value = cost.toFixed(2);
+
+        calculateProfit();
+
+    }
+
+
+    function calculateProfit() {
+
+        const cost =
+            parseFloat(costInput.value) || 0;
+
+        const quantity =
+            parseFloat(quantityInput.value) || 0;
+
+        const sellingPrice =
+            parseFloat(sellingPriceInput.value) || 0;
+
+
+        const profit =
+            (sellingPrice - cost) * quantity;
+
+
+        profitPreview.textContent =
+            profit.toFixed(2);
+
+    }
+
+
+    medicineSelect.addEventListener(
+        "change",
+        updateMedicineInformation
+    );
+
+
+    quantityInput.addEventListener(
+        "input",
+        calculateProfit
+    );
+
+
+    sellingPriceInput.addEventListener(
+        "input",
+        calculateProfit
+    );
+
+});
+
+</script>
+
+{% endblock %}
