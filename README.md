@@ -1,172 +1,501 @@
 # MEDIXA PHARMA — Pharmacy Inventory Management System
 
+
+
 A production-oriented pharmacy inventory management system developed for a private business.
 
-The system is designed to manage medicines, purchasing, sales, inventory balances, profit calculations, manufacturing and expiry information, user authentication, and database-backed operations through a web-based interface.
 
-> **Portfolio Notice:** This repository is a recruiter-safe portfolio version. The actual client's production repository and business data are kept private.
+
+The application provides a web-based interface for managing medicines, purchases, sales, inventory balances, profit calculations, manufacturing and expiry information, and user authentication.
+
+
+
+> **Project Note:** The client's production environment and business data are maintained separately and are not included in this public repository.
+
+
 
 ## Project Overview
 
-MEDIXA PHARMA provides a centralized interface for managing pharmacy inventory and daily stock transactions.
 
-### Core Features
+
+MEDIXA PHARMA provides a centralized interface for managing pharmacy inventory and day-to-day stock transactions.
+
+
+
+The system was developed with a focus on practical business requirements, reliable inventory calculations, database integration, and maintainable application structure.
+
+
+
+## Core Features
+
+
 
 - User registration and login
-- Secure password hashing
+
+- Password hashing
+
 - Password reset workflow
+
 - Medicine management
+
 - Medicine type classification
+
 - Purchase management
+
 - Sales management
+
 - Automatic inventory balance updates
+
 - Purchase and selling price tracking
+
 - Unit and total profit calculation
+
 - Manufacturing date tracking
+
 - Expiry date tracking
+
 - Medicine details
-- Inventory management dashboard
+
+- Inventory dashboard
+
 - Responsive web interface
-- PostgreSQL production database support
-- SQLite local-development support
-- Production deployment with Railway
+
+- SQLite support for local development
+
+- PostgreSQL support for production environments
+
+
 
 ## Technology Stack
 
-**Backend**
-- Python
-- Flask
-- Waitress / Gunicorn
 
-**Database**
-- SQLite for local development
-- PostgreSQL for production
+
+### Backend
+
+
+
+- Python
+
+- Flask
+
+- Jinja2
+
+- Gunicorn
+
+- Waitress
+
+
+
+### Database
+
+
+
+- SQLite
+
+- PostgreSQL
+
 - psycopg
 
-**Frontend**
-- HTML5
-- CSS3
-- JavaScript
-- Jinja2 templates
 
-**Deployment**
+
+### Frontend
+
+
+
+- HTML5
+
+- CSS3
+
+- JavaScript
+
+
+
+### Development & Deployment
+
+
+
+- Git
+
 - GitHub
+
 - Railway
+
 - Neon PostgreSQL
 
-**Security**
-- Password hashing
-- Environment-based secrets
-- Secure session configuration
-- Production database credentials kept outside source control
 
-## System Architecture
+
+## Application Architecture
+
+
 
 ```text
+
 User
-  │
-  ▼
+
+&#x20; Ã¢â€â€š
+
+&#x20; Ã¢â€“Â¼
+
 Web Browser
-  │
-  ▼
+
+&#x20; Ã¢â€â€š
+
+&#x20; Ã¢â€“Â¼
+
 Flask Application
-  │
-  ├── Authentication
-  ├── Medicine Management
-  ├── Purchase Management
-  ├── Sales Management
-  ├── Inventory Management
-  └── Profit / Expiry Tracking
-  │
-  ▼
-PostgreSQL Database
+
+&#x20; Ã¢â€â€š
+
+&#x20; Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Authentication
+
+&#x20; Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Medicine Management
+
+&#x20; Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Purchase Management
+
+&#x20; Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Sales Management
+
+&#x20; Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ Inventory Management
+
+&#x20; Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ Profit / Expiry Tracking
+
+&#x20; Ã¢â€â€š
+
+&#x20; Ã¢â€“Â¼
+
+Database
+
 ```
 
-## Development Architecture
 
-Local development uses SQLite so the application can be tested without requiring an external database.
+
+The application uses environment-based database configuration so that local development and production environments can use different database systems without changing the application code.
+
+
+
+### Local Development
+
+
 
 ```text
+
 Local Computer
-      │
-      ▼
+
+&#x20;     Ã¢â€â€š
+
+&#x20;     Ã¢â€“Â¼
+
 Flask Application
-      │
-      ▼
-SQLite
+
+&#x20;     Ã¢â€â€š
+
+&#x20;     Ã¢â€“Â¼
+
+SQLite Database
+
 ```
 
-The production deployment uses PostgreSQL:
+
+
+### Production Environment
+
+
 
 ```text
-GitHub
-   │
-   ▼
-Railway
-   │
-   ▼
+
+Cloud Hosting
+
+&#x20;     Ã¢â€â€š
+
+&#x20;     Ã¢â€“Â¼
+
 Flask Application
-   │
-   ▼
-Neon PostgreSQL
+
+&#x20;     Ã¢â€â€š
+
+&#x20;     Ã¢â€“Â¼
+
+PostgreSQL Database
+
 ```
+
+
+
+The production environment is maintained separately from this public repository.
+
+
 
 ## Engineering Highlights
 
+
+
 ### Inventory Management
 
-The application maintains medicine stock by processing purchase and sale transactions and updating available inventory accordingly.
+
+
+The application processes purchase and sale transactions and updates available medicine stock accordingly.
+
+
 
 ### Profit Calculation
 
-The system tracks purchase price, selling price, unit profit, and transaction-level profit to provide useful business information.
+
+
+Purchase price, selling price, unit profit, quantity, and transaction-level profit are tracked to provide useful business information.
+
+
 
 ### Authentication
 
-Users can create accounts and authenticate through the application. Passwords are stored using secure password hashing rather than plain text.
+
+
+Users can create accounts and authenticate through the application. Passwords are stored using password hashing rather than plain text.
+
+
 
 ### Database Flexibility
 
-The application supports SQLite during development and PostgreSQL in production through environment-based database configuration.
 
-### Production Deployment
 
-The application has been deployed as a live Flask web application using Railway with Neon PostgreSQL as the persistent production database.
+The application supports SQLite during local development and PostgreSQL in production through environment-based database configuration.
+
+
+
+### Production Configuration
+
+
+
+Sensitive configuration values such as database credentials and application secrets are stored outside source control through environment variables.
+
+
 
 ## Screenshots
 
-Screenshots can be added to the `screenshots/` directory to demonstrate the dashboard, inventory, purchase, sales, authentication, and other interfaces.
+
+
+Screenshots of the application's main interfaces are included in the `screenshots/` directory.
+
+
+
+The screenshots demonstrate areas such as:
+
+
+
+- Dashboard
+
+- Inventory
+
+- Purchase management
+
+- Sales management
+
+- Transactions
+
+- Medicine details
+
+- Authentication
+
+- Expiry management
+
+
 
 ## My Role
 
+
+
 I designed and developed the application with a focus on:
 
+
+
 - Backend development
+
 - Flask application structure
+
 - Database design and integration
+
 - Authentication
+
 - Inventory and transaction logic
+
 - Profit calculation
+
 - Responsive user interface
+
 - Production configuration
+
 - Cloud deployment
-- Database migration from local SQLite to PostgreSQL
 
-## Live Demo
+- Migration from local SQLite development to PostgreSQL production
 
-The production application is privately operated for the client.
 
-[Open MEDIXA PHARMA Production Application](https://medixa-pharma-production-production.up.railway.app)
 
-## Portfolio Note
+## Demo
 
-This public repository is intended to demonstrate my software engineering work while protecting the client's private source code, business information, credentials, and production data.
 
-The production repository is maintained separately as a private repository.
+
+A public interactive demo is not currently provided.
+
+
+
+The production application is privately operated for the client and is not exposed through this portfolio repository because it contains private business data and production configuration.
+
+
+
+The screenshots and documentation in this repository provide an overview of the application's functionality and implementation.
+
+
+
+## Project Structure
+
+
+
+```text
+
+MEDIXA-PHARMA-PORTFOLIO/
+
+Ã¢â€â€š
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ app.py
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ requirements.txt
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ wsgi.py
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ README.md
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ .env.example
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ .gitignore
+
+Ã¢â€â€š
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ static/
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ app.js
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ style.css
+
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ medixa_logo.png
+
+Ã¢â€â€š
+
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ templates/
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ add_medicine.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ auth_base.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ base.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ edit_medicine.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ expiry.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ forgot_password.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ home.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ inventory.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ login.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ medicine_details.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ purchase.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ register.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ reset_password.html
+
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ sell.html
+
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ transactions.html
+
+Ã¢â€â€š
+
+Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ screenshots/
+
+```
+
+
+
+## Running Locally
+
+
+
+Clone the repository and install the required dependencies:
+
+
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+
+
+Create a local `.env` file based on `.env.example`, configure the application for local development, and run:
+
+
+
+```bash
+
+python app.py
+
+```
+
+
+
+The application can then be accessed through the local Flask development server.
+
+
+
+## Development Notes
+
+
+
+The public repository is intended to demonstrate the technical implementation and development work behind the project.
+
+
+
+Client-specific production credentials, private business information, and production database data are intentionally excluded.
+
+
+
+## Future Improvements
+
+
+
+Potential future enhancements include:
+
+
+
+- Batch-level inventory management
+
+- FEFO-based stock handling
+
+- Inventory reporting and exports
+
+- Audit logging
+
+- Role-based access control
+
+- Automated database backups
+
+- Enhanced reporting and analytics
+
+
 
 ## Author
 
+
+
 **Rubab Majid**
 
-Software Engineering Student  
-Python • Flask • PostgreSQL • Web Development
+
+
+Software Engineering Student
+
+
+
+**Skills:** Python Ã¢â‚¬Â¢ Flask Ã¢â‚¬Â¢ PostgreSQL Ã¢â‚¬Â¢ SQL Ã¢â‚¬Â¢ HTML Ã¢â‚¬Â¢ CSS Ã¢â‚¬Â¢ JavaScript Ã¢â‚¬Â¢ Web Development
